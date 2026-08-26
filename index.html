@@ -773,13 +773,13 @@
     });
   }
 
-  function recordSubmission(tipo, fields){
+  function recordSubmission(tipo, fields, sheetFields){
     var entry = Object.assign({ id: uid(), ts: Date.now(), tipo: tipo }, fields);
     PUBLIC_SUBMISSIONS.unshift(entry);
     renderAdminPanel();
     try{ sessionStorage.setItem(PENDING_KEY, JSON.stringify(entry)); }catch(e){}
     persistSubmissions();
-    sendToSheet(entry);
+    sendToSheet(Object.assign({ id: entry.id, ts: entry.ts, tipo: tipo }, sheetFields || fields));
   }
 
   var downloadsCap = null;
@@ -991,6 +991,12 @@
       loja: form.loja.value.trim(),
       responsavel: (tipo === "pj" ? form.responsavelNome.value : form.pfNome.value).trim(),
       contato: form.telefone.value.trim() || form.email.value.trim()
+    }, {
+      loja: form.loja.value.trim(),
+      cnpj: tipo === "pj" ? form.cnpj.value.trim() : "",
+      responsavel: (tipo === "pj" ? form.responsavelNome.value : form.pfNome.value).trim(),
+      telefone: form.telefone.value.trim(),
+      email: form.email.value.trim()
     });
     showConfirm("panel-aderir","form-aderir","confirm-aderir");
   });
@@ -1006,6 +1012,12 @@
       loja: form.loja.value.trim(),
       responsavel: form.responsavel.value.trim(),
       contato: form.telefone.value.trim() || form.email.value.trim()
+    }, {
+      loja: form.loja.value.trim(),
+      cnpj: "",
+      responsavel: form.responsavel.value.trim(),
+      telefone: form.telefone.value.trim(),
+      email: form.email.value.trim()
     });
     showConfirm("panel-info","form-info","confirm-info");
   });
@@ -1022,6 +1034,12 @@
       loja: form.loja.value.trim(),
       responsavel: form.responsavel.value.trim(),
       contato: form.telefone.value.trim()
+    }, {
+      loja: form.loja.value.trim(),
+      cnpj: "",
+      responsavel: form.responsavel.value.trim(),
+      telefone: form.telefone.value.trim(),
+      email: ""
     });
     showConfirm("panel-nao","form-nao","confirm-nao");
   });
