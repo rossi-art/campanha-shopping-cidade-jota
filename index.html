@@ -641,7 +641,7 @@
   var PENDING_KEY = "sc_pending_submission_v1";
   // Cole aqui a URL do Web App do Google Apps Script (ver instruções enviadas por e-mail/chat).
   // Enquanto estiver vazio, o envio pra planilha é simplesmente ignorado.
-  var SHEETS_ENDPOINT = "";
+  var SHEETS_ENDPOINT = "https://script.google.com/macros/s/AKfycbySRPxSUv6f72qjdBd1ZDUMXnkWq32nOaY3r2RhsL9NcguC6IdwQ4USa_7RKSWxR-1lJw/exec";
   function sendToSheet(entry){
     if(!SHEETS_ENDPOINT) return;
     try{
