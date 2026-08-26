@@ -639,6 +639,20 @@
   var artifactCap = null;
   var PUBLIC_SUBMISSIONS = [];
   var PENDING_KEY = "sc_pending_submission_v1";
+  // Cole aqui a URL do Web App do Google Apps Script (ver instruções enviadas por e-mail/chat).
+  // Enquanto estiver vazio, o envio pra planilha é simplesmente ignorado.
+  var SHEETS_ENDPOINT = "";
+  function sendToSheet(entry){
+    if(!SHEETS_ENDPOINT) return;
+    try{
+      fetch(SHEETS_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(entry)
+      });
+    }catch(e){}
+  }
   var ADMIN_HASH = "#painel";
   var ADMIN_PASS_SHA256 = "753d47660f56ce5e3fdf6fb32a2eb72196cfc735f1b81f97e164e149bebeb7be";
   var ADMIN_PASS_FALLBACK = "515e0f00";
@@ -765,6 +779,7 @@
     renderAdminPanel();
     try{ sessionStorage.setItem(PENDING_KEY, JSON.stringify(entry)); }catch(e){}
     persistSubmissions();
+    sendToSheet(entry);
   }
 
   var downloadsCap = null;
